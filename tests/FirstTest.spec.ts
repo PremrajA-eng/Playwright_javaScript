@@ -1,11 +1,9 @@
 import {test,expect} from   '@playwright/test';
 
-test("open URL",({page})=>{
+test("open URL",async({page})=>{
 
-    page.goto("https://google.com")
-    let sitetitle:string=page.title();
-    
-    expect(page).toHaveTitle("google");
-
-
+    await page.goto("https://google.com")
+    let sitetitle:string= await page.title();
+    console.log(sitetitle);
+   await expect(page).toHaveTitle("Google");
 })

@@ -7,3 +7,10 @@ test("open URL",async({page})=>{
     console.log(sitetitle);
    await expect(page).toHaveTitle("Google");
 })
+
+test("click on link", async({page})=>{
+
+    await page.goto("https://www.google.com/");
+   await expect(page).toHaveURL(/google/);  // here slash represent its contain google in string
+
+})

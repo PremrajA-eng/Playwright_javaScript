@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playwright Test Page</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px;
+    background: #f5f6f8;
+    color: #222;
+  }
+  h1 { font-size: 22px; }
+  section {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  section h2 {
+    font-size: 16px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+  }
+  label { display: block; margin-top: 10px; font-weight: bold; font-size: 13px; }
+  input, select, textarea, button {
+    font-size: 14px;
+    padding: 6px 8px;
+    margin-top: 4px;
+  }
+  input[type="text"], input[type="password"], input[type="email"],
+  input[type="number"], input[type="search"], input[type="tel"],
+  input[type="url"], textarea, select {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  textarea { resize: vertical; }
+  .row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .row > div { flex: 1; min-width: 160px; }
+  button {
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background: #2563eb;
+    color: #fff;
+    padding: 8px 16px;
+    margin: 8px 8px 0 0;
+  }
+  button.secondary { background: #6b7280; }
+  button.danger { background: #dc2626; }
+  button:disabled { background: #aaa; cursor: not-allowed; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 13px; }
+  th { background: #f0f0f0; }
+  .hidden-el { display: none; }
+  .invisible-el { visibility: hidden; }
+  #dropZone {
+    border: 2px dashed #999;
+    border-radius: 6px;
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    margin-top: 10px;
+  }
+  #dropZone.dragover { background: #e0f2fe; border-color: #2563eb; }
+  .draggable {
+    display: inline-block;
+    padding: 8px 12px;
+    background: #fde68a;
+    border-radius: 4px;
+    cursor: grab;
+    margin-right: 8px;
+  }
+  #modalOverlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    display: none; align-items: center; justify-content: center;
+  }
+  #modalOverlay.open { display: flex; }
+  #modalBox {
+    background: #fff; padding: 24px; border-radius: 8px; width: 320px;
+  }
+  #toast {
+    position: fixed; bottom: 20px; right: 20px;
+    background: #111; color: #fff; padding: 10px 16px;
+    border-radius: 6px; display: none;
+  }
+  #toast.show { display: block; }
+  .tooltip-wrap { position: relative; display: inline-block; }
+  .tooltip-box {
+    display: none;
+    position: absolute; bottom: 130%; left: 0;
+    background: #333; color: #fff; padding: 6px 10px;
+    border-radius: 4px; font-size: 12px; white-space: nowrap;
+  }
+  .tooltip-wrap:hover .tooltip-box { display: block; }
+  #statusMsg { font-size: 13px; margin-top: 8px; min-height: 18px; }
+  #liveClock { font-weight: bold; }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 10px;
+    font-size: 11px; background: #dcfce7; color: #166534;
+  }
+</style>
+</head>
+<body>
+
+<h1>Playwright Test Page</h1>
+<p>A single page containing common web/form elements, states, and interaction patterns for automated UI testing.</p>
+
+<!-- ===================== TEXT INPUTS ===================== -->
+<section id="section-inputs">
+  <h2>Text-based Inputs</h2>
+  <form id="mainForm" data-testid="main-form">
+    <div class="row">
+      <div>
+        <label for="txtName">Text</label>
+        <input type="text" id="txtName" name="name" data-testid="input-name" placeholder="Enter your name">
+      </div>
+      <div>
+        <label for="txtEmail">Email</label>
+        <input type="email" id="txtEmail" name="email" data-testid="input-email" placeholder="you@example.com" required>
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="txtPassword">Password</label>
+        <input type="password" id="txtPassword" name="password" data-testid="input-password" minlength="6">
+      </div>
+      <div>
+        <label for="txtNumber">Number</label>
+        <input type="number" id="txtNumber" name="age" data-testid="input-number" min="0" max="120" step="1" value="25">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="txtSearch">Search</label>
+        <input type="search" id="txtSearch" name="search" data-testid="input-search" placeholder="Search…">
+      </div>
+      <div>
+        <label for="txtTel">Phone</label>
+        <input type="tel" id="txtTel" name="phone" data-testid="input-phone" placeholder="+1 555 000 0000">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="txtUrl">URL</label>
+        <input type="url" id="txtUrl" name="website" data-testid="input-url" placeholder="https://example.com">
+      </div>
+      <div>
+        <label for="txtDate">Date</label>
+        <input type="date" id="txtDate" name="dob" data-testid="input-date">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="txtTime">Time</label>
+        <input type="time" id="txtTime" name="time" data-testid="input-time">
+      </div>
+      <div>
+        <label for="txtColor">Color</label>
+        <input type="color" id="txtColor" name="color" data-testid="input-color" value="#2563eb">
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label for="txtRange">Range (Slider)</label>
+        <input type="range" id="txtRange" name="range" data-testid="input-range" min="0" max="100" value="50" oninput="document.getElementById('rangeVal').textContent=this.value">
+        <span id="rangeVal">50</span>
+      </div>
+      <div>
+        <label for="txtFile">File Upload</label>
+        <input type="file" id="txtFile" name="file" data-testid="input-file">
+      </div>
+    </div>
+
+    <label for="txtMessage">Textarea</label>
+    <textarea id="txtMessage" name="message" data-testid="input-message" rows="4" placeholder="Type a message..."></textarea>
+
+    <!-- ===================== SELECT / CHECKBOX / RADIO ===================== -->
+    <div class="row">
+      <div>
+        <label for="selCountry">Select (single)</label>
+        <select id="selCountry" name="country" data-testid="select-country">
+          <option value="">-- Choose --</option>
+          <option value="us">United States</option>
+          <option value="in">India</option>
+          <option value="uk">United Kingdom</option>
+          <option value="de">Germany</option>
+        </select>
+      </div>
+      <div>
+        <label for="selSkills">Select (multiple)</label>
+        <select id="selSkills" name="skills" data-testid="select-skills" multiple size="4">
+          <option value="js">JavaScript</option>
+          <option value="py">Python</option>
+          <option value="java">Java</option>
+          <option value="go">Go</option>
+        </select>
+      </div>
+    </div>
+
+    <label>Checkboxes</label>
+    <div>
+      <label style="display:inline-block; font-weight:normal;">
+        <input type="checkbox" id="chkA" name="interests" value="sports" data-testid="checkbox-sports"> Sports
+      </label><br>
+      <label style="display:inline-block; font-weight:normal;">
+        <input type="checkbox" id="chkB" name="interests" value="music" data-testid="checkbox-music" checked> Music
+      </label><br>
+      <label style="display:inline-block; font-weight:normal;">
+        <input type="checkbox" id="chkC" name="interests" value="reading" data-testid="checkbox-reading" disabled> Reading (disabled)
+      </label>
+    </div>
+
+    <label>Radio Buttons</label>
+    <div>
+      <label style="display:inline-block; font-weight:normal;">
+        <input type="radio" name="gender" value="male" id="radMale" data-testid="radio-male" checked> Male
+      </label><br>
+      <label style="display:inline-block; font-weight:normal;">
+        <input type="radio" name="gender" value="female" id="radFemale" data-testid="radio-female"> Female
+      </label><br>
+      <label style="display:inline-block; font-weight:normal;">
+        <input type="radio" name="gender" value="other" id="radOther" data-testid="radio-other"> Other
+      </label>
+    </div>
+
+    <div style="margin-top:16px;">
+      <button type="submit" id="btnSubmit" data-testid="btn-submit">Submit</button>
+      <button type="reset" class="secondary" id="btnReset" data-testid="btn-reset">Reset</button>
+      <button type="button" class="danger" id="btnDisabled" data-testid="btn-disabled" disabled>Disabled Button</button>
+    </div>
+    <p id="statusMsg" data-testid="status-msg"></p>
+  </form>
+</section>
+
+<!-- ===================== BUTTONS & INTERACTIONS ===================== -->
+<section id="section-buttons">
+  <h2>Buttons & Dynamic Interactions</h2>
+  <button id="btnCounter" data-testid="btn-counter" onclick="incrementCounter()">Clicked: <span id="counterVal">0</span></button>
+  <button id="btnAlert" data-testid="btn-alert" onclick="window.__lastAlert = prompt('Enter something:')">Trigger Prompt</button>
+  <button id="btnToast" data-testid="btn-toast" onclick="showToast()">Show Toast</button>
+  <button id="btnModal" data-testid="btn-modal" onclick="document.getElementById('modalOverlay').classList.add('open')">Open Modal</button>
+  <button id="btnToggleVisibility" data-testid="btn-toggle-visibility" onclick="toggleHiddenBox()">Toggle Hidden Box</button>
+  <button id="btnLoadMore" data-testid="btn-load-more" onclick="loadMoreItems()">Load More Items</button>
+
+  <div class="tooltip-wrap" style="margin-top:12px;">
+    <button data-testid="btn-tooltip">Hover for Tooltip</button>
+    <div class="tooltip-box" data-testid="tooltip-box">I'm a tooltip!</div>
+  </div>
+
+  <div id="hiddenBox" class="hidden-el" data-testid="hidden-box" style="margin-top:12px; padding:10px; background:#fef9c3; border-radius:4px;">
+    You found the hidden box!
+  </div>
+
+  <ul id="itemList" data-testid="item-list" style="margin-top:12px;">
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+  </ul>
+</section>
+
+<!-- ===================== MODAL ===================== -->
+<div id="modalOverlay" data-testid="modal-overlay">
+  <div id="modalBox" data-testid="modal-box">
+    <h3>Modal Dialog</h3>
+    <p>This is a test modal for Playwright dialog handling.</p>
+    <button id="btnModalClose" data-testid="btn-modal-close" onclick="document.getElementById('modalOverlay').classList.remove('open')">Close</button>
+  </div>
+</div>
+
+<!-- ===================== TOAST ===================== -->
+<div id="toast" data-testid="toast">This is a toast notification</div>
+
+<!-- ===================== LINKS ===================== -->
+<section id="section-links">
+  <h2>Links</h2>
+  <a href="https://example.com" id="linkExternal" data-testid="link-external" target="_blank" rel="noopener">External Link (new tab)</a><br>
+  <a href="#section-table" id="linkAnchor" data-testid="link-anchor">Jump to Table Section</a><br>
+  <a href="javascript:void(0)" id="linkJs" data-testid="link-js" onclick="document.getElementById('statusMsg').textContent='JS link clicked'">JavaScript Link</a>
+</section>
+
+<!-- ===================== TABLE ===================== -->
+<section id="section-table">
+  <h2>Table</h2>
+  <table id="dataTable" data-testid="data-table">
+    <thead>
+      <tr><th>ID</th><th>Name</th><th>Role</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr data-testid="row-1"><td>1</td><td>Alice</td><td>Admin</td><td><span class="badge">Active</span></td></tr>
+      <tr data-testid="row-2"><td>2</td><td>Bob</td><td>Editor</td><td><span class="badge">Active</span></td></tr>
+      <tr data-testid="row-3"><td>3</td><td>Carol</td><td>Viewer</td><td><span class="badge" style="background:#fee2e2;color:#991b1b;">Inactive</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===================== DRAG AND DROP ===================== -->
+<section id="section-dnd">
+  <h2>Drag and Drop</h2>
+  <div class="draggable" id="dragItem1" data-testid="drag-item-1" draggable="true">Drag me 1</div>
+  <div class="draggable" id="dragItem2" data-testid="drag-item-2" draggable="true">Drag me 2</div>
+  <div id="dropZone" data-testid="drop-zone">Drop items here</div>
+</section>
+
+<!-- ===================== IFRAME ===================== -->
+<section id="section-iframe">
+  <h2>Iframe</h2>
+  <iframe id="testFrame" data-testid="test-iframe" srcdoc="<html><body style='font-family:sans-serif;padding:10px;'><h3>Inside Iframe</h3><input id='innerInput' data-testid='iframe-input' placeholder='type here' /><button id='innerBtn' data-testid='iframe-btn' onclick=&quot;document.getElementById('innerOut').textContent='clicked'&quot;>Click</button><p id='innerOut'></p></body></html>" width="100%" height="140" style="border:1px solid #ccc; border-radius:6px;"></iframe>
+</section>
+
+<!-- ===================== MISC / STATE ===================== -->
+<section id="section-misc">
+  <h2>Misc / State Elements</h2>
+  <p>Live clock: <span id="liveClock" data-testid="live-clock">--:--:--</span></p>
+  <p class="invisible-el" id="invisibleText" data-testid="invisible-text">You can't see me visually but I'm in the DOM.</p>
+  <input type="text" id="readonlyInput" data-testid="readonly-input" value="Read only value" readonly>
+  <br><br>
+  <input type="checkbox" id="chkAutoDisable" data-testid="checkbox-auto-disable" onchange="document.getElementById('btnDisabled').disabled = !this.checked">
+  <label for="chkAutoDisable" style="display:inline; font-weight:normal;">Enable "Disabled Button" above</label>
+</section>
+
+<script>
+  // Counter
+  let count = 0;
+  function incrementCounter() {
+    count++;
+    document.getElementById('counterVal').textContent = count;
+  }
+
+  // Toast
+  function showToast() {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+
+  // Hidden box toggle
+  function toggleHiddenBox() {
+    document.getElementById('hiddenBox').classList.toggle('hidden-el');
+  }
+
+  // Load more items
+  let itemCount = 3;
+  function loadMoreItems() {
+    itemCount++;
+    const li = document.createElement('li');
+    li.textContent = 'Item ' + itemCount;
+    li.setAttribute('data-testid', 'list-item-' + itemCount);
+    document.getElementById('itemList').appendChild(li);
+  }
+
+  // Form submit
+  document.getElementById('mainForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('statusMsg').textContent = 'Form submitted successfully at ' + new Date().toLocaleTimeString();
+  });
+
+  // Live clock
+  function updateClock() {
+    document.getElementById('liveClock').textContent = new Date().toLocaleTimeString();
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // Drag and drop
+  document.querySelectorAll('.draggable').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', e.target.id);
+    });
+  });
+  const dropZone = document.getElementById('dropZone');
+  dropZone.addEventListener('dragover', e => {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+  });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    const id = e.dataTransfer.getData('text/plain');
+    const el = document.getElementById(id);
+    if (el) {
+      dropZone.appendChild(el);
+      dropZone.setAttribute('data-dropped', id);
+    }
+  });
+</script>
+
+</body>
+</html>

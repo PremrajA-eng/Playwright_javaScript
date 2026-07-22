@@ -14,7 +14,6 @@ console.log("nth number product:: ", await alllocator.nth(3).textContent());
 console.log("All text content::  ",  await alllocator.allTextContents() ) // array of string 
 let allElement:string[]= await alllocator.allTextContents();
 for(let i=0;i<allTextBox;i++){
-    console.log(allElement[i]);
-   
+    console.log(allElement[i]);  
 }
 })

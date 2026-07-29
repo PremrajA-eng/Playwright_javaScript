@@ -26,7 +26,7 @@ expect(await maleRadio.isChecked()).toBe(true);
   await page.waitForTimeout(10000);
 })
 
-test.only("radio button",async({page})=>{
+test("radio button",async({page})=>{
 await page.goto("https://testautomationpractice.blogspot.com/");
 const Days:string[]=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 const checkBoxes:Locator[]=Days.map(index=>page.getByLabel(index)); // this will return checkBoxes

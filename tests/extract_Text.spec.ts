@@ -21,4 +21,15 @@ console.log(alltext.map(str=>str.trim()));
 
 const allprotext: string[]=await productLocator.allInnerTexts()
 console.log(allprotext);
+
+const productlocators:Locator[]=await productLocator.all() // all array of locators
+console.log(productlocators)
+for(let j of productlocators)  // (let i=0; i<=productlocator.count();i++)
+    {
+    console.log(await j.innerText())  
+}
+for(let k in productlocators){
+    console.log(await productlocators[k].innerText())
+}
+
 })

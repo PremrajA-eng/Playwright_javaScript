@@ -55,7 +55,10 @@ test.only("Seaching element in table", async({page})=>{
             break;
          }
         }
-
+         expect(matchfound).toBeTruthy();
+   }
+   else{
+    console.log("value not found")
    }
 
 
